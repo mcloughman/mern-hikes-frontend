@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import HikeDetails from "../components/HikeDetails"
 import HikeForm from "../components/HikeForm"
+import { useHikesContext } from "../hooks/useHikesContext"
 
 const Home = () => {
-  const [hikes, setHikes] = useState(null)
+  //  we no longer need the below state because we're now using context
+  // const [hikes, setHikes] = useState(null)
+  const { hikes, dispatch } = useHikesContext()
 
   useEffect(() => {
     const fetchHikes = async () => {
@@ -21,7 +24,8 @@ const Home = () => {
       const json = await response.json()
       console.log(json)
       if (response.ok) {
-        setHikes(json)
+        dispatch({ type: "SET_HIKES", payload: json })
+        console.log(hikes)
       }
     }
     fetchHikes()

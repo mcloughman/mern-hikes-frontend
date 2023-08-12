@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useHikesContext } from "../hooks/useHikesContext"
 
 const HikeForm = () => {
+  const { dispatch } = useHikesContext()
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -53,6 +55,7 @@ const HikeForm = () => {
       setFormData({ title: "", description: "", images: [], rating: 0 })
       setError(null)
       console.log("new workout added")
+      dispatch({ type: "CREATE_HIKE", payload: json })
     }
   }
 
@@ -86,7 +89,7 @@ const HikeForm = () => {
             />
           </div>
         ))}
-        <button type="img-button" onClick={handleAddImageInput}>
+        <button type="button" className="img-btn" onClick={handleAddImageInput}>
           Add Image
         </button>
       </label>
