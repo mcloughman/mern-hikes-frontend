@@ -1,5 +1,6 @@
 import { useHikesContext } from "../hooks/useHikesContext"
 import { FaTrashAlt } from "react-icons/fa"
+import { BsTrash3 } from "react-icons/bs"
 
 const HikeDetails = ({ hike }) => {
   const { dispatch } = useHikesContext()
@@ -25,10 +26,10 @@ const HikeDetails = ({ hike }) => {
         <p>
           Rating: <span className="rating-span">{hike.rating}</span>
         </p>
+        <BsTrash3 onClick={handleClick} className="trashcan" />
       </div>
       <img src={hike.images[0]} alt="stunning scenery" />
 
-      <button onClick={handleClick}>Delete</button>
       <hr />
     </div>
   )

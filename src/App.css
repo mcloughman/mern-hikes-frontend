@@ -90,7 +90,15 @@ hr {
 }
 .error {
   border: 2px solid red;
+}
+p.error {
+  border: 2px solid red;
   color: red;
+}
+.trashcan {
+  color: red;
+  display: block;
+  margin-right: 0;
 }
 
 @media (min-width: 768px) {

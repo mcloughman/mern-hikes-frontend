@@ -106,9 +106,7 @@ const HikeForm = () => {
           name="rating"
           value={formData.rating}
           onChange={handleFormData}
-          className={`rating ${
-            emptyFields.includes("description") ? "error" : ""
-          }`}
+          className={`rating ${emptyFields.includes("rating") ? "error" : ""}`}
         />
       </label>
       <br />
