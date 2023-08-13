@@ -10,6 +10,7 @@ const HikeForm = () => {
     rating: 0,
   })
   const [error, setError] = useState(null)
+  const [emptyFields, setEmptyFields] = useState([])
 
   const handleFormData = (e) => {
     const { name, value } = e.target
@@ -50,10 +51,12 @@ const HikeForm = () => {
     if (!response.ok) {
       // we set an error property on the response in the backend controllers and we will access it now
       setError(json.error)
+      setEmptyFields(json.emptyFields)
     }
     if (response.ok) {
       setFormData({ title: "", description: "", images: [], rating: 0 })
       setError(null)
+      setEmptyFields([])
       console.log("new workout added")
       dispatch({ type: "CREATE_HIKE", payload: json })
     }
@@ -69,6 +72,7 @@ const HikeForm = () => {
         id="title"
         value={formData.title}
         onChange={handleFormData}
+        className={emptyFields.includes("title") ? "error" : ""}
       />
       <label htmlFor="description">Description</label>
       <textarea
@@ -77,6 +81,7 @@ const HikeForm = () => {
         id="description"
         value={formData.description}
         onChange={handleFormData}
+        className={emptyFields.includes("description") ? "error" : ""}
       />
       <label htmlFor="images" className="form-img-label">
         Images:
@@ -101,14 +106,16 @@ const HikeForm = () => {
           name="rating"
           value={formData.rating}
           onChange={handleFormData}
-          className="rating"
+          className={`rating ${
+            emptyFields.includes("description") ? "error" : ""
+          }`}
         />
       </label>
       <br />
       <button type="submit" className="submit-btn">
         Submit
       </button>
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
     </form>
   )
 }
