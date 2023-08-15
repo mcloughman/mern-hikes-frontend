@@ -1,12 +1,14 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import HikeDetails from "../components/HikeDetails"
 import HikeForm from "../components/HikeForm"
+import Navbar from "../components/Navbar"
 import { useHikesContext } from "../hooks/useHikesContext"
 
 const Home = () => {
   //  we no longer need the below state because we're now using context
   // const [hikes, setHikes] = useState(null)
   const { hikes, dispatch } = useHikesContext()
+  const [newHikeForm, setNewHikeForm] = useState(false)
 
   useEffect(() => {
     const fetchHikes = async () => {
@@ -31,9 +33,17 @@ const Home = () => {
     fetchHikes()
   }, [dispatch])
 
+  const handleNewHikeForm = () => {
+    setNewHikeForm(true)
+  }
+
   return (
     <div className="home">
-      <HikeForm />
+      <Navbar />
+      <button className="add-hike-btn mern-btn" onClick={handleNewHikeForm}>
+        Add New Hike
+      </button>
+      {newHikeForm && <HikeForm />}
       <div className="hikes">
         {hikes &&
           hikes.map((hike) => <HikeDetails hike={hike} key={hike._id} />)}

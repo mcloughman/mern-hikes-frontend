@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom"
 import { useHikesContext } from "../hooks/useHikesContext"
-import { FaTrashAlt } from "react-icons/fa"
 import { BsTrash3 } from "react-icons/bs"
 
 const HikeDetails = ({ hike }) => {
@@ -17,15 +17,24 @@ const HikeDetails = ({ hike }) => {
     }
   }
 
+  const truncated = (inputString, maxLength) => {
+    const truncated = inputString.substring(0, maxLength)
+    const lastSpaceIndex = truncated.lastIndexOf(" ")
+    return lastSpaceIndex !== -1
+      ? truncated.substring(0, lastSpaceIndex)
+      : truncated
+  }
+
   return (
     <div className="hike-object">
       <div className="hike-details">
         <h2>{hike.title}</h2>
 
-        <p>{hike.description.substring(0, 50)}...</p>
-        <p>
-          Rating: <span className="rating-span">{hike.rating}</span>
+        <p className="truncated">
+          {truncated(hike.description, 100)}...
+          <Link to={`/${hike._id}`}>Read more</Link>
         </p>
+
         <BsTrash3 onClick={handleClick} className="trashcan" />
       </div>
       <img src={hike.images[0]} alt="stunning scenery" />
