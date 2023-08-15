@@ -1,19 +1,27 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useHikesContext } from "../hooks/useHikesContext"
 import { BsTrash3 } from "react-icons/bs"
+const apiKey = "yes"
 
 const HikeDetails = ({ hike }) => {
   const { dispatch } = useHikesContext()
+  const [authError, setAuthError] = useState(null)
   const handleClick = async () => {
     const response = await fetch(
       "http://localhost:4000/api/hikes/" + hike._id,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
       }
     )
     const json = await response.json()
     if (response.ok) {
       dispatch({ type: "DELETE_HIKE", payload: json })
+    } else {
+      setAuthError(json.message)
     }
   }
 
@@ -33,6 +41,7 @@ const HikeDetails = ({ hike }) => {
         <p className="truncated">
           {truncated(hike.description, 100)}...
           <Link to={`/${hike._id}`}>Read more</Link>
+          {authError && <h4>{authError}</h4>}
         </p>
 
         <BsTrash3 onClick={handleClick} className="trashcan" />

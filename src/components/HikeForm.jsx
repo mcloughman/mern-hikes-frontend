@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useHikesContext } from "../hooks/useHikesContext"
+const apiKey = "maybe"
 
 const HikeForm = () => {
   const { dispatch } = useHikesContext()
@@ -10,6 +11,7 @@ const HikeForm = () => {
     rating: 0,
   })
   const [error, setError] = useState(null)
+  const [authError, setAuthError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
 
   const handleFormData = (e) => {
@@ -45,26 +47,30 @@ const HikeForm = () => {
       body: JSON.stringify(hike),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
     })
     const json = await response.json()
-    if (!response.ok) {
-      // we set an error property on the response in the backend controllers and we will access it now
-      setError(json.error)
-      setEmptyFields(json.emptyFields)
-    }
     if (response.ok) {
       setFormData({ title: "", description: "", images: [], rating: 0 })
       setError(null)
       setEmptyFields([])
+      setAuthError(null)
       console.log("new workout added")
       dispatch({ type: "CREATE_HIKE", payload: json })
+    } else if (response.status === 400) {
+      // we set an error property on the response in the backend controllers and we will access it now
+      setError(json.error)
+      setEmptyFields(json.emptyFields)
+    } else {
+      setAuthError(json.message)
     }
   }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
       <h3>Add New Hike</h3>
+      {authError && <h4>{authError}</h4>}
       <label htmlFor="title">Title</label>
       <input
         type="text"

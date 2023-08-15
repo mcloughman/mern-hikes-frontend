@@ -7,7 +7,6 @@ const SingleHike = () => {
   const [showUpdateForm, setShowUpdateForm] = useState(false)
   const { hikes } = useHikesContext()
   const { id } = useParams()
-  console.log(id)
 
   let hike = hikes.find((h) => h._id === id)
   console.log(hike)

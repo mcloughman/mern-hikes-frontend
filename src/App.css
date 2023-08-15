@@ -106,12 +106,13 @@ hr {
   border: none;
 }
 .error {
-  border: 2px solid red;
+  border: 3px solid red;
 }
-p.error {
-  border: 2px solid red;
+h4,
+.error p {
   color: red;
 }
+
 .trashcan {
   color: red;
   display: block;

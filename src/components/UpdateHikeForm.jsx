@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useHikesContext } from "../hooks/useHikesContext"
+const apiKey = "yes"
 
 const UpdateHikeForm = ({ hike }) => {
-  console.log(hike)
   const { dispatch } = useHikesContext()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const UpdateHikeForm = ({ hike }) => {
   })
 
   const [error, setError] = useState(null)
+  const [authError, setAuthError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
 
   // Render your form with pre-populated formData
@@ -27,19 +28,25 @@ const UpdateHikeForm = ({ hike }) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify(formData),
         }
       )
 
-      if (response.ok) {
-        const json = await response.json()
+      const json = await response.json()
 
+      if (response.ok) {
         dispatch({ type: "UPDATE_HIKE", payload: json })
+        setError(null)
+        setEmptyFields([])
+        setAuthError(null)
         navigate("/")
-      } else {
+      } else if (response.status === 400) {
         setError(json.error)
         setEmptyFields(json.emptyFields)
+      } else if (response.status === 401) {
+        setAuthError(json.message)
       }
     } catch (error) {
       console.error("Error updating hike:", error)
@@ -49,6 +56,7 @@ const UpdateHikeForm = ({ hike }) => {
     <>
       <form onSubmit={handleSubmit} className="form">
         <h3>Update Hike</h3>
+        {authError && <h4 className="error">{authError}</h4>}
         <label htmlFor="title">Title</label>
         <input
           type="text"
