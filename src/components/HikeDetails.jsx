@@ -9,7 +9,8 @@ const HikeDetails = ({ hike }) => {
   const [authError, setAuthError] = useState(null)
   const handleClick = async () => {
     const response = await fetch(
-      "http://localhost:4000/api/hikes/" + hike._id,
+      "https://vast-brook-03843-baafe7d564ff.herokuapp.com/api/hikes/" +
+        hike._id,
       {
         method: "DELETE",
         headers: {

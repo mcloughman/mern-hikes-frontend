@@ -42,14 +42,17 @@ const HikeForm = () => {
     e.preventDefault()
     const hike = formData
     console.log(hike)
-    const response = await fetch("http://localhost:4000/api/hikes", {
-      method: "POST",
-      body: JSON.stringify(hike),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-    })
+    const response = await fetch(
+      "https://vast-brook-03843-baafe7d564ff.herokuapp.com/api/hikes",
+      {
+        method: "POST",
+        body: JSON.stringify(hike),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    )
     const json = await response.json()
     if (response.ok) {
       setFormData({ title: "", description: "", images: [], rating: 0 })

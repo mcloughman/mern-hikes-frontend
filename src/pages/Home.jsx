@@ -15,12 +15,15 @@ const Home = () => {
       // we set up a proxy in package.json to get around cors errors. so we don't need full url here
       // this will only work in development not production
       console.log("hello")
-      const response = await fetch("http://localhost:4000/api/hikes", {
-        method: "GET",
-        headers: {
-          Origin: "http://localhost:5173.com", // Replace with your frontend domain
-        },
-      })
+      const response = await fetch(
+        "https://vast-brook-03843-baafe7d564ff.herokuapp.com/api/hikes",
+        {
+          method: "GET",
+          headers: {
+            Origin: "http://localhost:5173.com", // Replace with your frontend domain
+          },
+        }
+      )
       console.log(response)
 
       const json = await response.json()
